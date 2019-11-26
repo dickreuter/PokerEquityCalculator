@@ -5,10 +5,17 @@
 #include <vector>
 #include "Deck.h"
 
+//Stick this somewhere central
+#ifdef EXPORT_FOO
+#define FOO_API __declspec(dllexport)
+#else
+#define FOO_API __declspec(dllimport)
+#endif
+
 using CardsWithTableCombined = std::set<std::string>;
 using Score = std::vector<std::tuple<int, int>>;
 
-bool eval_best_hand(const std::vector<CardsWithTableCombined>&);
+FOO_API bool eval_best_hand(const std::vector<CardsWithTableCombined>&);
 std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const CardsWithTableCombined&);
 
 template<typename T>

@@ -152,6 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\EquityCalculatorMontecarlo\Deck.cpp" />
+    <ClCompile Include="..\EquityCalculatorMontecarlo\Scoring.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
