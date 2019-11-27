@@ -34,12 +34,6 @@ bool eval_best_hand(const std::vector<CardsWithTableCombined>& all_cards_with_ta
 	return best_hand;
 }
 
-template <typename T1, typename T2>
-bool sortdesc_tuple(const std::tuple<T1, T2>& a, const std::tuple<T1, T2>& b)
-{
-	return (std::get<0>(a) > std::get<0>(b));
-}
-
 Score get_rcounts(const CardsWithTableCombined& all_cards_with_table_combined,
 	std::vector<std::size_t> available_ranks,
 	const std::string original_ranks) {
@@ -73,7 +67,7 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 	rcounts = get_rcounts(all_cards_with_table_combined, available_ranks, original_ranks);
 
 	// sort tuple and split into score and card ranks
-	std::sort(rcounts.begin(), rcounts.end(), sortdesc_tuple<int, int>);
+	std::sort(rcounts.begin(), rcounts.end(), std::greater<std::tuple<int, int>>());
 	for (auto it = std::make_move_iterator(rcounts.begin()),
 		end = std::make_move_iterator(rcounts.end()); it != end; ++it)
 	{
@@ -138,22 +132,22 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 				rsuits.emplace_back(std::make_pair(suit, count));
 			}
 		}
-		std::sort(rsuits.begin(), rsuits.end(), sortdesc_tuple<std::string, int>);
+		std::sort(rsuits.begin(), rsuits.end(), std::greater<std::tuple<std::string, int>>());
 		flush = std::get<1>(rsuits[0]) >= 5; // the most occurred suit appear at least 5 times
 
 		if (flush == true)
 		{
-			auto flush_suit = std::get<1>(rsuits[0]);
+			auto flush_suit = std::get<0>(rsuits[0]);
 			CardsWithTableCombined flush_hand;
 			for (auto card : all_cards_with_table_combined) {
-				if (card[1] == flush_suit) {
+				if (card[1] == flush_suit[0]) {
 					flush_hand.insert(card);
 				}
 			}
 
 			Score rcounts_flush = get_rcounts(flush_hand, available_ranks, original_ranks);
 			// sort tuple and split into score and card ranks
-			std::sort(rcounts_flush.begin(), rcounts_flush.end(), sortdesc_tuple<int, int>);
+			std::sort(rcounts_flush.begin(), rcounts_flush.end(), std::greater<std::tuple<int,int>>());		
 			for (auto it = std::make_move_iterator(rcounts_flush.begin()),
 				end = std::make_move_iterator(rcounts_flush.end()); it != end; ++it)
 			{
