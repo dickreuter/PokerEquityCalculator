@@ -11,3 +11,11 @@ and in numpy). The pure python implementation is significantly slower. The numpy
 version is almost 1000 faster, but lacks some flexibility. It's the aim
 of this version over overcome them and also implement
 ranges and give maximum flexibility at maximum speed.
+
+`Scoring.cpp`: Contains logic to evaluate a hand.
+
+
+`Deck.cpp`: Contains logic to create a standard poker deck and distribute cards
+
+
+`Test.cpp`: Contains unit tests for hand evaluation and montecarlo simulation.

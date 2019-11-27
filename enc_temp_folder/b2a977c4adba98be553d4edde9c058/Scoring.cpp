@@ -114,7 +114,6 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 			card_ranks[0] += -1;
 
 		std::sort(card_ranks.begin(), card_ranks.end(), std::greater <>());  // sort again
-
 		for (int i = 0; i < card_ranks.size() - 4; ++i) {
 			bool straight = card_ranks[i] - card_ranks[i + 4] == 4;
 			if (straight == true) {
