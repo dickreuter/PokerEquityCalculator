@@ -17,6 +17,7 @@ using Score = std::vector<std::tuple<int, int>>;
 
 FOO_API bool eval_best_hand(const std::vector<CardsWithTableCombined>&);
 std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const CardsWithTableCombined&);
+double montecarlo(const std::set<std::string>&, const std::set<std::string>&, const int, const int);
 
 template<typename T>
 std::vector<T> slice(std::vector<T> const& v, int m, int n)

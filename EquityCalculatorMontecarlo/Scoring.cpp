@@ -235,3 +235,23 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 	auto res = std::make_tuple(score, card_ranks, hand_type);
 	return res;
 }
+
+
+double montecarlo(const std::set<std::string>& my_cards, const std::set<std::string>& cards_on_table, const int number_of_players, const int iterations) {
+
+	int wins = 0;
+
+	for (int i = 0; i < iterations; i++)
+	{
+		Deck deck;
+		deck.remove_visible_cards(my_cards, cards_on_table);
+		deck.distribute_cards(number_of_players);
+		std::vector<CardsWithTableCombined> cards_with_table_combined = deck.get_cards_combined();
+		bool first_player_has_best_hand = eval_best_hand(cards_with_table_combined);
+		if (first_player_has_best_hand == true)
+			wins += 1;
+	}
+	double equity = (wins / (double)iterations) * 100.0;
+	std::cout << "Equity: " << equity << "%" << std::endl;
+	return equity;
+}

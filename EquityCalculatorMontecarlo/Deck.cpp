@@ -10,14 +10,14 @@
 
 Deck::Deck() {
 	std::string combined;
-	std::cout << "Constructing deck..." << std::endl;
+	//std::cout << "Constructing deck..." << std::endl;
 	for (char& r : ranks) {
 		for (char& s : suits) {
 			combined = std::string() + r + s;
 			full_deck.insert(combined);
 		};
 	};
-	std::cout << "Cards in deck: " << full_deck.size() << std::endl;
+	//std::cout << "Cards in deck: " << full_deck.size() << std::endl;
 }
 
 void Deck::remove_visible_cards(const Hand& my_cards_, const std::set<std::string>& cards_on_table_) {
@@ -30,12 +30,12 @@ void Deck::remove_visible_cards(const Hand& my_cards_, const std::set<std::strin
 		cards_on_table_.end(),
 		std::inserter(remaining_cards, remaining_cards.end()));
 
-	std::cout << "Remaining cards: " << remaining_cards.size() << std::endl;
+	//std::cout << "Remaining cards: " << remaining_cards.size() << std::endl;
 
 	this->my_cards = my_cards_.cards;
 	this->cards_on_table = cards_on_table_;
 
-	std::cout << "Removed my cards from deck...\n";
+	//std::cout << "Removed my cards from deck...\n";
 }
 
 void Deck::distribute_cards(int number_players) {
@@ -60,16 +60,16 @@ void Deck::distribute_cards(int number_players) {
 	}
 
 	// print out the hands
-	for (auto const& player_hand : player_hands) {
-		std::cout << "Cards: ";
-		for (const auto& card : player_hand.cards)
-			std::cout << card << " ";
-		std::cout << std::endl;
-	}
+	//for (auto const& player_hand : player_hands) {
+	//	std::cout << "Cards: ";
+	//	for (const auto& card : player_hand.cards)
+	//		std::cout << card << " ";
+	//	std::cout << std::endl;
+	//}
 	this->player_hands = player_hands;
 
-	std::cout << "Cards on table: ";
-	print_set(cards_on_table);
+	//std::cout << "Cards on table: ";
+	//print_set(cards_on_table);
 }
 
 std::vector<CardsWithTableCombined> Deck::get_cards_combined() {
