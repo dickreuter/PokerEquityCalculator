@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_CASE(card_evaluation2)
 
 BOOST_AUTO_TEST_CASE(card_evaluation3)
 {
-	std::set<std::string> cards1 = { "AS", "KS", "TS", "9S", "7S", "2H", "2H" };
-	std::set<std::string> cards2 = { "AS", "KS", "TS", "9S", "8S", "2H", "2H" };
+	std::set<std::string> cards1 = { "AS", "KS", "TS", "9S", "7S", "2H", "2D" };
+	std::set<std::string> cards2 = { "AS", "KS", "TS", "9S", "8S", "2H", "2D" };
 
 	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
 
@@ -122,6 +122,54 @@ BOOST_AUTO_TEST_CASE(card_evaluation9)
 	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
 
 	bool expected = false;
+	bool won = eval_best_hand(all_cards);
+	BOOST_TEST(won == expected);
+}
+
+BOOST_AUTO_TEST_CASE(card_evaluation10)
+{
+	std::set<std::string> cards1 = { "7C", "5S", "3S", "JD", "8H", "2S", "KH" };
+	std::set<std::string> cards2 = { "AD", "3D", "3S", "5D", "9H", "8S", "KH" };
+
+	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
+
+	bool expected = false;
+	bool won = eval_best_hand(all_cards);
+	BOOST_TEST(won == expected);
+}
+
+BOOST_AUTO_TEST_CASE(card_evaluation11)
+{
+	std::set<std::string> cards1 = { "7H", "7S", "3S", "JD", "8H", "2S", "KH" };
+	std::set<std::string> cards2 = { "7D", "3D", "3S", "7C", "9H", "8S", "KH" };
+
+	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
+
+	bool expected = false;
+	bool won = eval_best_hand(all_cards);
+	BOOST_TEST(won == expected);
+}
+
+BOOST_AUTO_TEST_CASE(card_evaluation12)
+{
+	std::set<std::string> cards1 = { "AS", "8H", "TS", "JH", "3H", "2H", "AH" };
+	std::set<std::string> cards2 = { "QD", "QH", "TS", "JH", "3H", "2H", "AH" };
+
+	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
+
+	bool expected = false;
+	bool won = eval_best_hand(all_cards);
+	BOOST_TEST(won == expected);
+}
+
+BOOST_AUTO_TEST_CASE(card_evaluation13)
+{
+	std::set<std::string> cards1 = { "9S", "7H", "KS", "KH", "AH", "AS", "AC" };
+	std::set<std::string> cards2 = { "8D", "2H", "KS", "KH", "AH", "AS", "AC" };
+
+	const std::vector<CardsWithTableCombined> all_cards{ cards1,cards2 };
+
+	bool expected = true;
 	bool won = eval_best_hand(all_cards);
 	BOOST_TEST(won == expected);
 }

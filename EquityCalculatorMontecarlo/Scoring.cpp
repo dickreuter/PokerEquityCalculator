@@ -57,12 +57,13 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 	std::vector<std::string> available_suits;
 	std::vector<int> score;
 	std::vector<int> card_ranks;
+	std::vector<int> sorted_card_ranks;
 	std::string hand_type;
 	bool flush = false;
 	bool straight = false;
 
 	Score rcounts;
-	std::vector<std::tuple<std::string, int>> rsuits;
+	std::vector<std::tuple<int, std::string>> rsuits;
 
 	rcounts = get_rcounts(all_cards_with_table_combined, available_ranks, original_ranks);
 
@@ -98,23 +99,24 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 	else if (score[0] == 4) {  // four of a kind
 		score = { 4, };
 		// avoid for example 11, 8, 9
-		std::sort(card_ranks.begin(), card_ranks.end(), std::greater <>());
-		card_ranks = { card_ranks[0], card_ranks[1] };
+		sorted_card_ranks = card_ranks;
+		std::sort(sorted_card_ranks.begin(), sorted_card_ranks.end(), std::greater <>());
+		card_ranks = { sorted_card_ranks[0], sorted_card_ranks[1] };
 	}
 	else if (score.size() >= 5) {  // high card, flush, straight and straight flush
 		// straight
 		// adjust for 5 high straight
 		if (std::find(card_ranks.begin(), card_ranks.end(), 12) != card_ranks.end())
-			card_ranks[0] += -1;
+			card_ranks.push_back(-1);
+		sorted_card_ranks = card_ranks;
+		std::sort(sorted_card_ranks.begin(), sorted_card_ranks.end(), std::greater <>());  // sort again
 
-		std::sort(card_ranks.begin(), card_ranks.end(), std::greater <>());  // sort again
-
-		for (int i = 0; i < card_ranks.size() - 4; ++i) {
-			bool straight = card_ranks[i] - card_ranks[i + 4] == 4;
+		for (int i = 0; i < sorted_card_ranks.size() - 4; ++i) {
+			straight = sorted_card_ranks[i] - sorted_card_ranks[i + 4] == 4;
 			if (straight == true) {
 				card_ranks = {
-					card_ranks[i], card_ranks[i + 1], card_ranks[i + 2], card_ranks[i + 3],
-					card_ranks[i + 4] };
+					sorted_card_ranks[i], sorted_card_ranks[i + 1], sorted_card_ranks[i + 2], sorted_card_ranks[i + 3],
+					sorted_card_ranks[i + 4] };
 				break;
 			}
 		}
@@ -129,15 +131,15 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 		for (const auto& suit : original_suits) {  // why can original_suits not be a string and suit a char?
 			int count = std::count(available_suits.begin(), available_suits.end(), suit);
 			if (count > 0) {
-				rsuits.emplace_back(std::make_pair(suit, count));
+				rsuits.emplace_back(std::make_pair(count, suit));
 			}
 		}
-		std::sort(rsuits.begin(), rsuits.end(), std::greater<std::tuple<std::string, int>>());
-		flush = std::get<1>(rsuits[0]) >= 5; // the most occurred suit appear at least 5 times
+		std::sort(rsuits.begin(), rsuits.end(), std::greater<std::tuple<int, std::string>>());
+		flush = std::get<0>(rsuits[0]) >= 5; // the most occurred suit appear at least 5 times
 
 		if (flush == true)
 		{
-			auto flush_suit = std::get<0>(rsuits[0]);
+			auto flush_suit = std::get<1>(rsuits[0]);
 			CardsWithTableCombined flush_hand;
 			for (auto card : all_cards_with_table_combined) {
 				if (card[1] == flush_suit[0]) {
@@ -147,20 +149,23 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 
 			Score rcounts_flush = get_rcounts(flush_hand, available_ranks, original_ranks);
 			// sort tuple and split into score and card ranks
-			std::sort(rcounts_flush.begin(), rcounts_flush.end(), std::greater<std::tuple<int,int>>());		
+			std::sort(rcounts_flush.begin(), rcounts_flush.end(), std::greater<std::tuple<int, int>>());
+			card_ranks.clear();
+			score.clear();
 			for (auto it = std::make_move_iterator(rcounts_flush.begin()),
 				end = std::make_move_iterator(rcounts_flush.end()); it != end; ++it)
 			{
-				card_ranks.push_back(std::get<0>(*it));  // ranks of individual cards
-				score.push_back(std::get<1>(*it));  // amount of occurrences
+				score.push_back(std::get<0>(*it));  // ranks of individual cards
+				card_ranks.push_back(std::get<1>(*it));  // amount of occurrences
 			}
 
 			//	# check for straight in flush
 			// if 12 in card_ranks and -1 not in card_ranks : # adjust if 5 high straight
 			if (std::find(card_ranks.begin(), card_ranks.end(), 12) != card_ranks.end() &&
 				!(std::find(card_ranks.begin(), card_ranks.end(), -1) != card_ranks.end())) {
+				card_ranks.push_back(-1);
 			}
-			card_ranks[0] += -1;
+
 			for (int i = 0; i < card_ranks.size() - 4; i++) {
 				straight = card_ranks[i] - card_ranks[i + 4] == 4;
 				if (straight == true)
@@ -169,17 +174,17 @@ std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const Ca
 				}
 			}
 		}
-	}
-	// no pair, straight, flush, or straight flush
-	if (flush == false && straight == false)
-		score = { 1 };
-	else if (flush == true && straight == false)
-		score = { 3, 1, 2 };
-	else if (flush == false && straight == true)
-		score = { 3, 1, 3 };
-	else if (flush == true && straight == true)
-		score = { 5 };
 
+		// no pair, straight, flush, or straight flush
+		if (flush == false && straight == false)
+			score = { 1 };
+		else if (flush == false && straight == true)
+			score = { 3, 1, 2 };
+		else if (flush == true && straight == false)
+			score = { 3, 1, 3 };
+		else if (flush == true && straight == true)
+			score = { 5 };
+	}
 	if (score[0] == 1 && potential_threeofakind == true)
 		score = { 3,1 };
 	else if (score[0] == 1 && potential_twopair == true)
