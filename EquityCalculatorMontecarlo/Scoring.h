@@ -1,23 +1,20 @@
 #pragma once
 
+#include <boost/python.hpp>
 #include <set>
 #include <string>
 #include <vector>
 #include "Deck.h"
 
-//Stick this somewhere central
-#ifdef EXPORT_FOO
-#define FOO_API __declspec(dllexport)
-#else
-#define FOO_API __declspec(dllimport)
-#endif
 
 using CardsWithTableCombined = std::set<std::string>;
 using Score = std::vector<std::tuple<int, int>>;
 
-FOO_API bool eval_best_hand(const std::vector<CardsWithTableCombined>&);
+bool eval_best_hand(const std::vector<CardsWithTableCombined>&);
 std::tuple< std::vector<int>, std::vector<int>, std::string> calc_score(const CardsWithTableCombined&);
-double montecarlo(const std::set<std::string>&, const std::set<std::string>&, const int, const int);
+
+__declspec(dllexport) double montecarlo(const std::set<std::string>&, const std::set<std::string>&, const int, const int);
+
 
 template<typename T>
 std::vector<T> slice(std::vector<T> const& v, int m, int n)

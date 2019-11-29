@@ -173,3 +173,14 @@ BOOST_AUTO_TEST_CASE(card_evaluation13)
 	bool won = eval_best_hand(all_cards);
 	BOOST_TEST(won == expected);
 }
+
+BOOST_AUTO_TEST_CASE(montecarlo1)
+{
+	std::set<std::string> my_cards = { "KC", "TC" };
+	std::set<std::string> cards_on_table = { "AD", "TD", "7S" };
+	const int number_of_players = 6;
+	const int iterations = 10000;
+	double equity = montecarlo(my_cards, cards_on_table, number_of_players, iterations);
+
+	BOOST_TEST(equity > 0);
+}
