@@ -146,7 +146,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\dickr\AppData\Local\Continuum\anaconda3\include\pybind11;C:\Users\dickr\AppData\Local\Continuum\anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\dickr\anaconda3\include\pybind11;C:\Users\dickr\anaconda3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,15 +159,11 @@
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="EquityCalculator.cpp" />
     <ClCompile Include="Scoring.cpp" />
-    <ClCompile Include="warp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Deck.h" />
     <ClInclude Include="EquityCalculator.h" />
     <ClInclude Include="Scoring.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wrap.py" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

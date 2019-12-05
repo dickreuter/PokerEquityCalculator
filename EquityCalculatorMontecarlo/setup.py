@@ -8,8 +8,8 @@ cpp_args = ['-std=c++11', '-stdlib=libc++', '-mmacosx-version-min=10.7']
 ext_modules = [
     Extension(
     'wrap',
-        ['funcs.cpp', 'wrap.cpp'],
-        include_dirs=['pybind11/include'],
+        ['Scoring.cpp'],
+        include_dirs=['C:/Users/dickr/Anaconda3/include'],
     language='c++',
     extra_compile_args = cpp_args,
     ),

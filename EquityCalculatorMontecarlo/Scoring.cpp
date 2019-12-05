@@ -1,10 +1,30 @@
+/*
+<%
+setup_pybind11(cfg)
+%>
+*/
+
 #include "Scoring.h"
+#include "Deck.h"
 
 #include <array>
 #include <vector>
 #include <iostream>
 #include <tuple>
 #include <algorithm>
+
+
+#include <C:\Users\dickr\anaconda3\include\pybind11\pybind11.h>
+
+
+namespace py = pybind11;
+using namespace pybind11::literals;
+
+
+PYBIND11_MODULE(Scoring, m) {
+	m.def("montecarlo", &montecarlo);
+}
+
 
 namespace
 {

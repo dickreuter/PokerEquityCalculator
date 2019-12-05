@@ -24,9 +24,6 @@
     <ClCompile Include="Scoring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="warp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Deck.h">
@@ -38,8 +35,5 @@
     <ClInclude Include="Scoring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wrap.py" />
   </ItemGroup>
 </Project>
